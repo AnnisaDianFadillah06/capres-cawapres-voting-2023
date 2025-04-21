@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data-Relawan</title>
+
+  <!-- 
+    - favicon
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@400;700&family=Saira+Stencil+One&display=swap"
+    rel="stylesheet">
+</head>
+
+<body id="top" class="dark_theme">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <h1 class="h1 logo">
+        <a href="index.html">PEMILU<span>.</span></a>
+      </h1>
+
+      <div class="navbar-actions">
+
+        <button class="theme-btn" aria-label="Change Theme" title="Change Theme" data-theme-btn>
+          <span class="icon"></span>
+        </button>
+
+      </div>
+
+      <button class="nav-toggle-btn" aria-label="Toggle Menu" title="Toggle Menu" data-nav-toggle-btn>
+        <span class="one"></span>
+        <span class="two"></span>
+        <span class="three"></span>
+      </button>
+
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
+
+          <li>
+            <a href="#hero" class="navbar-link">Tabel</a>
+          </li>
+
+          <li>
+            <a href="#contact2" class="navbar-link">Grafik</a>
+          </li>
+      </nav>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    <article class="container">
+
+      <!-- 
+        - #HERO
+      -->
+
+      <section class="hero" id="hero" >
+        <table class="rtable">
+          <thead>
+              <tr>
+                  <th>NO</th>
+                  <th>NIK</th>
+                  <th>Nama Penduduk</th>
+                  <th>NO.HP</th>
+                  <th>Domisi(Kota)</th>
+                  <th>Relawan Paslon</th>
+              </tr>
+          </thead>
+          <tbody id="result">
+          </tbody>
+      </table>
+    </section>
+      <section class="contact2" id="contact2">
+
+        <div class="contact-form2">
+ 
+      <canvas id="chart" width="400" height="100"></canvas>
+ </div>
+</section>
+      <script>
+        // Ambil data dari localStorage
+        const formData = JSON.parse(localStorage.getItem('formData'));
+
+        if (formData) {
+            const tableBody = document.getElementById('result');
+
+            formData.forEach((data, index) => {
+                const newRow = tableBody.insertRow(tableBody.rows.length);
+                const cell1 = newRow.insertCell(0);
+                const cell2 = newRow.insertCell(1);
+                const cell3 = newRow.insertCell(2);
+                const cell4 = newRow.insertCell(3);
+                const cell5 = newRow.insertCell(4);
+                const cell6 = newRow.insertCell(5);
+
+                cell1.innerHTML = index + 1;
+                cell2.innerHTML = data.nik;
+                cell3.innerHTML = data.name;
+                cell4.innerHTML = data.nohp;
+                cell5.innerHTML = data.domisili;
+                cell6.innerHTML = data.relawan;
+            });
+
+            const relawanData = {
+            'Prabowo-Gibran': 0,
+            'Anies-Cak Imin': 0,
+            'Ganjar-Mahfud': 0,
+        };
+
+        formData.forEach(data => {
+            if (data.relawan in relawanData) {
+                relawanData[data.relawan]++;
+            }
+        });
+
+        // Siapkan data untuk grafik
+        const labels = Object.keys(relawanData);
+        const data = Object.values(relawanData);
+
+        // Buat grafik dengan Chart.js
+        const ctx = document.getElementById('chart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Jumlah Relawan',
+                    data: data,
+                    backgroundColor: [
+                        'hsl(24, 74%, 58%)',    // --raw-seinna
+                        'hsl(51, 95%, 54%)',    // --sizzling-sunrise
+                        '#eb3705'               // --scarlet
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+        }
+
+        // Event untuk menghapus data dari localStorage saat meninggalkan halaman
+        window.addEventListener('beforeunload', function () {
+            localStorage.removeItem('formData');
+        });
+
+    </script>
+  
+
+     
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <p class="h1 logo">
+        <a href="#">
+          PEMILU<span>.</span>
+        </a>
+      </p>
+
+      <p class="copyright">
+        &copy; 2023 <a href="#">AleaDianNaomi</a>. All rights reserved
+      </p>
+
+    </div>
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top title="Go to Top">
+    <ion-icon name="arrow-up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
